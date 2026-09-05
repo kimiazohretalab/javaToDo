@@ -1,90 +1,122 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <link
+            rel="stylesheet"
+            href="${pageContext.request.contextPath}/css/style.css"
+    >
     <title>Todo List</title>
 </head>
 
 <body>
 
-<h1>Todo List</h1>
+<div class="container">
 
-<form method="post" action="${pageContext.request.contextPath}/todos">
+    <div class="todo-card">
 
-    <input
-            type="text"
-            name="title"
-            placeholder="Enter todo"
-    >
+        <h1>Todo List</h1>
 
-    <button type="submit">
-        Add
-    </button>
+        <form
+                method="post"
+                action="${pageContext.request.contextPath}/todos"
+                class="add-form"
+        >
 
-</form>
-
-<hr>
-
-<ul>
-
-    <c:forEach var="todo" items="${todos}">
-
-        <li>
-
-            <form
-                    method="post"
-                    action="${pageContext.request.contextPath}/todos/toggle"
-                    style="display:inline;"
+            <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter a new todo..."
             >
 
-                <input
-                        type="hidden"
-                        name="id"
-                        value="${todo.id}"
-                >
-
-                <button type="submit">
-                        ${todo.completed ? '☑' : '☐'}
-                </button>
-
-            </form>
-
-                ${todo.title}
-
-            <c:if test="${todo.completed}">
-                - Completed
-            </c:if>
-
-            <c:if test="${!todo.completed}">
-                - Not completed
-            </c:if>
-
-            <form
-                    method="post"
-                    action="${pageContext.request.contextPath}/todos/delete"
-                    style="display:inline;"
+            <button
+                    type="submit"
+                    class="add-button"
             >
+                Add
+            </button>
 
-                <input
-                        type="hidden"
-                        name="id"
-                        value="${todo.id}"
-                >
+        </form>
 
-                <button type="submit">
-                    Delete
-                </button>
+        <ul class="todo-list">
 
-            </form>
+            <c:forEach var="todo" items="${todos}">
 
-        </li>
+                <li class="todo-item">
 
-    </c:forEach>
+                    <form
+                            method="post"
+                            action="${pageContext.request.contextPath}/todos/toggle"
+                    >
 
-</ul>
+                        <input
+                                type="hidden"
+                                name="id"
+                                value="${todo.id}"
+                        >
+
+                        <button
+                                type="submit"
+                                class="toggle-button"
+                        >
+                                ${todo.completed ? '☑' : '☐'}
+                        </button>
+
+                    </form>
+
+                    <span class="todo-title ${todo.completed ? 'completed' : ''}">
+                            ${todo.title}
+                    </span>
+
+                    <span class="status">
+
+                        <c:choose>
+
+                            <c:when test="${todo.completed}">
+                                Completed
+                            </c:when>
+
+                            <c:otherwise>
+                                Not completed
+                            </c:otherwise>
+
+                        </c:choose>
+
+                    </span>
+
+                    <form
+                            method="post"
+                            action="${pageContext.request.contextPath}/todos/delete"
+                    >
+
+                        <input
+                                type="hidden"
+                                name="id"
+                                value="${todo.id}"
+                        >
+
+                        <button
+                                type="submit"
+                                class="delete-button"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+
+                </li>
+
+            </c:forEach>
+
+        </ul>
+
+    </div>
+
+</div>
 
 </body>
 </html>

@@ -12,4 +12,10 @@ public class JPAUtil {
     public static EntityManager getEntityManager() {
         return ENTITY_MANAGER_FACTORY.createEntityManager();
     }
+
+    public static void close() {
+        if (ENTITY_MANAGER_FACTORY.isOpen()) {
+            ENTITY_MANAGER_FACTORY.close();
+        }
+    }
 }
