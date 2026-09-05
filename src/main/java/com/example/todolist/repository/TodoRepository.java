@@ -49,4 +49,69 @@ public class TodoRepository {
             em.close();
         }
     }
+
+    public void update(Todo todo) {
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            em.merge(todo);
+
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw e;
+
+        } finally {
+            em.close();
+        }
+    }
+    public Todo findById(Long id) {
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+
+            return em.find(Todo.class, id);
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public void delete(Long id) {
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+
+            em.getTransaction().begin();
+
+            Todo todo = em.find(Todo.class, id);
+
+            if (todo != null) {
+                em.remove(todo);
+            }
+
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw e;
+
+        } finally {
+            em.close();
+        }
+    }
 }

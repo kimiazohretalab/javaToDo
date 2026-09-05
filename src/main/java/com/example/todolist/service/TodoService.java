@@ -22,4 +22,21 @@ public class TodoService {
     public List<Todo> getAllTodos() {
         return repository.findAll();
     }
+
+    public void toggleTodo(Long id) {
+
+        Todo todo = repository.findById(id);
+
+        if (todo == null) {
+            return;
+        }
+
+        todo.setCompleted(!todo.isCompleted());
+
+        repository.update(todo);
+    }
+
+    public void deleteTodo(Long id) {
+        repository.delete(id);
+    }
 }
